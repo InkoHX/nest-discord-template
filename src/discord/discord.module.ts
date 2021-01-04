@@ -1,4 +1,9 @@
 import { Module } from '@nestjs/common'
 
-@Module({})
+import { DiscordService } from './discord.service'
+
+@Module({
+  providers: [DiscordService],
+  exports: [DiscordService],
+})
 export class DiscordModule {}
