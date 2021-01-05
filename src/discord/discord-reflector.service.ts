@@ -6,17 +6,25 @@ import {
   DISCORD_CHILD_COMMAND,
   DISCORD_COMMAND,
   DISCORD_COMMAND_PARAM,
+  DISCORD_EVENT,
   DISCORD_PARENT_COMMAND,
 } from './discord.decorator'
 import {
   DiscordChildCommandMetadata,
   DiscordCommandMetadata,
   DiscordCommandParamMetadata,
+  DiscordEventMetadata,
 } from './discord.interface'
 
 @Injectable()
 export class DiscordReflectorService {
   public constructor(private readonly reflector: Reflector) {}
+
+  public getEventMetadata(
+    target: Function | Type<any>
+  ): DiscordEventMetadata | undefined {
+    return this.reflector.get(DISCORD_EVENT, target)
+  }
 
   public getCommandMetadata(
     target: Function | Type<any>
