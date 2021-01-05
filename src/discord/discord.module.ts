@@ -1,7 +1,7 @@
 import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
 import { DiscoveryModule } from '@nestjs/core'
 
-import { DiscordCommandService } from './discord-command-explorer.service'
+import { DiscordCommandService } from './discord-command.service'
 import { DiscordEventExplorer } from './discord-event-explorer.service'
 import { DiscordParentCommandService } from './discord-parent-command.service'
 import { DiscordReflectorService } from './discord-reflector.service'
