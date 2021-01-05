@@ -67,8 +67,11 @@ export const Command = (
 export const ParentCommand = (commandName: string): ClassDecorator =>
   SetMetadata(DISCORD_PARENT_COMMAND, commandName)
 
-export const ChildCommand = (commandArgs?: string): MethodDecorator =>
-  SetMetadata(DISCORD_CHILD_COMMAND, commandArgs)
+export const ChildCommand = (
+  commandName: string,
+  commandArgs?: string
+): MethodDecorator =>
+  SetMetadata(DISCORD_CHILD_COMMAND, { commandName, commandArgs })
 
 export const CommandParam = createCommandParamDecorator('ARGUMENT')
 export const CommandMessage = createCommandParamDecorator('MESSAGE')()
