@@ -3,19 +3,26 @@ import { DiscoveryService, MetadataScanner } from '@nestjs/core'
 
 import { DiscordReflectorService } from './discord-reflector.service'
 import { DiscordEvent } from './discord.interface'
+import { DiscordService } from './discord.service'
 
 @Injectable()
-export class DiscordEventExplorer {
+export class DiscordEventService {
   public constructor(
     private readonly discovery: DiscoveryService,
     private readonly metadataScanner: MetadataScanner,
-    private readonly reflector: DiscordReflectorService
+    private readonly reflector: DiscordReflectorService,
+    private readonly bot: DiscordService
   ) {}
 
-  public explore(): DiscordEvent[] {
-    return this.getProviders()
+  public init() {
+    this.getProviders()
       .map(wrapper => this.scan(wrapper.instance))
       .flat()
+      .forEach(({ eventName, once, callback }) =>
+        once
+          ? this.bot.once(eventName, callback)
+          : this.bot.on(eventName, callback)
+      )
   }
 
   private scan(instance: any): DiscordEvent[] {
