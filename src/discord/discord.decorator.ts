@@ -10,8 +10,8 @@ import {
 
 export const DISCORD_EVENT = Symbol('DISCORD_EVENT')
 export const DISCORD_COMMAND = Symbol('DISCORD_COMMAND')
-export const DISCORD_COMMAND_SIMPLE = Symbol('DISCORD_COMMAND_SIMPLE')
-export const DISCORD_COMMAND_ARGUMENT = Symbol('DISCORD_COMMAND_ARGUMENT')
+export const DISCORD_PARENT_COMMAND = Symbol('DISCORD_PARENT_COMMAND')
+export const DISCORD_CHILD_COMMAND = Symbol('DISCORD_COMMAND_ARGUMENT')
 export const DISCORD_COMMAND_PARAM = Symbol('DISCORD_COMMAND_PARAM')
 
 export const DiscordEvent = (
@@ -59,17 +59,16 @@ const createCommandParamDecorator = (paramType: DiscordCommandParamType) => (
   }
 }
 
-export const Command = (commandName: string): ClassDecorator =>
-  SetMetadata(DISCORD_COMMAND, commandName)
-
-export const SingleCommand = (
+export const Command = (
   commandName: string,
   commandArgs: string
-): MethodDecorator =>
-  SetMetadata(DISCORD_COMMAND_SIMPLE, { commandName, commandArgs })
+): MethodDecorator => SetMetadata(DISCORD_COMMAND, { commandName, commandArgs })
 
-export const CommandArgument = (commandArgs: string): MethodDecorator =>
-  SetMetadata(DISCORD_COMMAND_ARGUMENT, commandArgs)
+export const ParentCommand = (commandName: string): ClassDecorator =>
+  SetMetadata(DISCORD_PARENT_COMMAND, commandName)
+
+export const ChildCommand = (commandArgs: string): MethodDecorator =>
+  SetMetadata(DISCORD_CHILD_COMMAND, commandArgs)
 
 export const CommandParam = createCommandParamDecorator('ARGUMENT')
 export const CommandMessage = createCommandParamDecorator('MESSAGE')()
