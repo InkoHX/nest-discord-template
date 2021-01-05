@@ -61,13 +61,13 @@ const createCommandParamDecorator = (paramType: DiscordCommandParamType) => (
 
 export const Command = (
   commandName: string,
-  commandArgs: string
+  commandArgs?: string
 ): MethodDecorator => SetMetadata(DISCORD_COMMAND, { commandName, commandArgs })
 
 export const ParentCommand = (commandName: string): ClassDecorator =>
   SetMetadata(DISCORD_PARENT_COMMAND, commandName)
 
-export const ChildCommand = (commandArgs: string): MethodDecorator =>
+export const ChildCommand = (commandArgs?: string): MethodDecorator =>
   SetMetadata(DISCORD_CHILD_COMMAND, commandArgs)
 
 export const CommandParam = createCommandParamDecorator('ARGUMENT')
