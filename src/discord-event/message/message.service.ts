@@ -5,9 +5,12 @@ import { DiscordCommandService } from 'src/discord/discord-command.service'
 import { DiscordParentCommandService } from 'src/discord/discord-parent-command.service'
 import { DiscordEvent } from 'src/discord/discord.decorator'
 import { DiscordService } from 'src/discord/discord.service'
-import util from 'util'
 
-const { isPromise } = util.types
+const isPromise = (obj: any): obj is Promise<any> =>
+  obj !== null &&
+  typeof obj === 'object' &&
+  typeof obj.then === 'function' &&
+  typeof obj.catch === 'function'
 
 @Injectable()
 export class MessageService {
@@ -19,15 +22,18 @@ export class MessageService {
 
   @DiscordEvent('message')
   public onMessage(message: Message) {
-    Promise.all([this.runCommand(message), this.runParentCommand(message)])
+    Promise.all([
+      this.runCommand(message),
+      this.runParentCommand(message),
+    ]).catch(console.error)
   }
 
   private async runCommand(message: Message) {
     for (const { commandName, commandArgs, params, callback } of this.command) {
       const pattern =
-        this.bot.commandPrefix + commandName + commandArgs
-          ? ` ${commandArgs}`
-          : ''
+        this.bot.commandPrefix +
+        commandName +
+        (commandArgs ? ` ${commandArgs}` : '')
       const matchResult = match(pattern)(message.content)
 
       if (!matchResult) continue
@@ -51,9 +57,9 @@ export class MessageService {
 
       for (const { commandArgs, params, callback } of children) {
         const pattern =
-          this.bot.commandPrefix + commandName + commandArgs
-            ? ` ${commandArgs}`
-            : ''
+          this.bot.commandPrefix +
+          commandName +
+          (commandArgs ? ` ${commandArgs}` : '')
         const matchResult = match(pattern)(message.content)
 
         if (!matchResult) continue
