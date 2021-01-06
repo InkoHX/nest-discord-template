@@ -34,7 +34,7 @@ export type DiscordCommandParamMetadata =
 export interface DiscordChildCommand {
   commandArgs?: string
   params: DiscordCommandParamMetadata[]
-  callback: (...args: any[]) => void
+  callback: (...args: any[]) => void | Promise<void>
 }
 
 export interface DiscordParentCommand {
@@ -44,5 +44,5 @@ export interface DiscordParentCommand {
 
 export interface DiscordCommand extends DiscordCommandMetadata {
   params: DiscordCommandParamMetadata[]
-  callback: (...args: any[]) => void
+  callback: (...args: any[]) => void | Promise<void>
 }
