@@ -48,12 +48,6 @@ export class DiscordReflectorService {
     target: Function | Type<any>,
     methodName: string
   ): DiscordCommandParamMetadata[] {
-    return (
-      Reflect.getMetadata(
-        DISCORD_COMMAND_PARAM,
-        target.constructor,
-        methodName
-      ) ?? []
-    )
+    return Reflect.getMetadata(DISCORD_COMMAND_PARAM, target, methodName) ?? []
   }
 }
