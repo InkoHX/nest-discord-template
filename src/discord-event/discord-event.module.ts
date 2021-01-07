@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { DiscordModule } from 'src/discord/discord.module'
 
+import { DiscordModule } from '../discord/discord.module'
 import { MessageService } from './message/message.service'
 
 @Module({

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Message } from 'discord.js'
-import { Command, CommandMessage } from 'src/discord/discord.decorator'
+import { Command, CommandMessage } from '../../discord/discord.decorator'
 
 @Injectable()
 export class PingCommandService {
