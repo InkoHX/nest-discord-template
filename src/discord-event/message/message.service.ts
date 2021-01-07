@@ -23,6 +23,8 @@ export class MessageService {
 
   @DiscordEvent('message')
   public onMessage(message: Message) {
+    if (message.author.bot || message.system) return
+
     Promise.all([
       this.runCommand(message),
       this.runParentCommand(message),
