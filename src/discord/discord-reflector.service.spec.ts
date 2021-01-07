@@ -126,6 +126,11 @@ describe('DiscordService', () => {
       .getCommandParamMetadata(TestParam.constructor, 'test3')
       .sort((a, b) => a.parameterIndex - b.parameterIndex)
 
+    const test4Metadata = service.getCommandParamMetadata(
+      TestParam.constructor,
+      'empty'
+    )
+
     expect(test1Metadata).toHaveLength(1)
     expect(test1Metadata[0]).toBeDefined()
     expect(test1Metadata[0].paramType).toEqual('MESSAGE')
@@ -143,5 +148,9 @@ describe('DiscordService', () => {
     expect(test3Metadata[1]).toBeDefined()
     expect(test3Metadata[1].paramType).toEqual('ARGUMENT')
     expect(test3Metadata[1].parameterIndex).toEqual(1)
+
+    expect(test4Metadata).toBeDefined()
+    expect(Array.isArray(test4Metadata)).toEqual(true)
+    expect(test4Metadata).toHaveLength(0)
   })
 })
