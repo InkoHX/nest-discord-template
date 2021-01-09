@@ -1,8 +1,8 @@
 import { Injectable, Type } from '@nestjs/common'
 import { DiscoveryService, MetadataScanner } from '@nestjs/core'
 
-import { DiscordReflectorService } from './discord-reflector.service'
-import { DiscordChildCommand, DiscordParentCommand } from './discord.interface'
+import { DiscordChildCommand, DiscordParentCommand } from '../discord.interface'
+import { DiscordReflectorService } from '../reflector/discord-reflector.service'
 
 @Injectable()
 export class DiscordParentCommandService extends Set<DiscordParentCommand> {

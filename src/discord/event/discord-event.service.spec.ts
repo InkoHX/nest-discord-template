@@ -1,9 +1,9 @@
 import { DiscoveryModule } from '@nestjs/core'
 import { Test, TestingModule } from '@nestjs/testing'
 
+import { DiscordService } from '../discord.service'
+import { DiscordReflectorService } from '../reflector/discord-reflector.service'
 import { DiscordEventService } from './discord-event.service'
-import { DiscordReflectorService } from './discord-reflector.service'
-import { DiscordService } from './discord.service'
 
 describe('DiscordService', () => {
   let service: DiscordEventService

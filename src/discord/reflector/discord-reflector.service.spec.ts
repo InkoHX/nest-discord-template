@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { DiscordReflectorService } from './discord-reflector.service'
 import {
   ChildCommand,
   Command,
@@ -9,7 +8,8 @@ import {
   CommandParam,
   DiscordEvent,
   ParentCommand,
-} from './discord.decorator'
+} from '../discord.decorator'
+import { DiscordReflectorService } from './discord-reflector.service'
 
 describe('DiscordService', () => {
   let service: DiscordReflectorService

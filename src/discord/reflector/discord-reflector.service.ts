@@ -8,13 +8,13 @@ import {
   DISCORD_COMMAND_PARAM,
   DISCORD_EVENT,
   DISCORD_PARENT_COMMAND,
-} from './discord.decorator'
+} from '../discord.decorator'
 import {
   DiscordChildCommandMetadata,
   DiscordCommandMetadata,
   DiscordCommandParamMetadata,
   DiscordEventMetadata,
-} from './discord.interface'
+} from '../discord.interface'
 
 @Injectable()
 export class DiscordReflectorService {

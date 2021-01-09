@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common'
 import { Message } from 'discord.js'
 import { match } from 'path-to-regexp'
 
-import { DiscordCommandService } from '../../discord/discord-command.service'
-import { DiscordParentCommandService } from '../../discord/discord-parent-command.service'
+import { DiscordCommandService } from '../../discord/command/discord-command.service'
 import { DiscordEvent } from '../../discord/discord.decorator'
 import { DiscordService } from '../../discord/discord.service'
+import { DiscordParentCommandService } from '../../discord/parent-command/discord-parent-command.service'
 
 const isPromise = (obj: any): obj is Promise<any> =>
   obj !== null &&

@@ -1,9 +1,9 @@
 import { Injectable, Type } from '@nestjs/common'
 import { DiscoveryService, MetadataScanner } from '@nestjs/core'
 
-import { DiscordReflectorService } from './discord-reflector.service'
-import { DiscordEvent } from './discord.interface'
-import { DiscordService } from './discord.service'
+import { DiscordEvent } from '../discord.interface'
+import { DiscordService } from '../discord.service'
+import { DiscordReflectorService } from '../reflector/discord-reflector.service'
 
 @Injectable()
 export class DiscordEventService {

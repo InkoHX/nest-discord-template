@@ -1,8 +1,8 @@
 import { Injectable, Type } from '@nestjs/common'
 import { DiscoveryService, MetadataScanner } from '@nestjs/core'
 
-import { DiscordReflectorService } from './discord-reflector.service'
-import { DiscordCommand } from './discord.interface'
+import { DiscordCommand } from '../discord.interface'
+import { DiscordReflectorService } from '../reflector/discord-reflector.service'
 
 @Injectable()
 export class DiscordCommandService extends Set<DiscordCommand> {

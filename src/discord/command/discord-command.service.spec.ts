@@ -1,21 +1,19 @@
 import { DiscoveryModule } from '@nestjs/core'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { DiscordParentCommandService } from './discord-parent-command.service'
-import { DiscordReflectorService } from './discord-reflector.service'
+import { DiscordReflectorService } from '../reflector/discord-reflector.service'
+import { DiscordCommandService } from './discord-command.service'
 
 describe('DiscordService', () => {
-  let service: DiscordParentCommandService
+  let service: DiscordCommandService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [DiscordReflectorService, DiscordParentCommandService],
+      providers: [DiscordReflectorService, DiscordCommandService],
       imports: [DiscoveryModule],
     }).compile()
 
-    service = module.get<DiscordParentCommandService>(
-      DiscordParentCommandService
-    )
+    service = module.get<DiscordCommandService>(DiscordCommandService)
   })
 
   it('should be defined', () => {
