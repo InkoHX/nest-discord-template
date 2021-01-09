@@ -19,6 +19,6 @@ describe('DiscordService', () => {
   })
 
   it('DiscordJS.Client should be extended', () => {
-    expect(service instanceof Client).toBe(true)
+    expect(service).toBeInstanceOf(Client)
   })
 })
