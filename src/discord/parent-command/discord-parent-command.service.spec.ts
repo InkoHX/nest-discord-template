@@ -21,4 +21,14 @@ describe('DiscordService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined()
   })
+
+  it('getProviders', () => {
+    const providers = service['getProviders']()
+
+    expect(
+      providers.every(wrapper => wrapper.isDependencyTreeStatic())
+    ).toBeTruthy()
+    expect(providers.every(wrapper => wrapper.instance)).toBeTruthy()
+    expect(providers.every(wrapper => wrapper.metatype)).toBeTruthy()
+  })
 })
