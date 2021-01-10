@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@nestjs/common'
 import { DiscoveryService, MetadataScanner } from '@nestjs/core'
 
-import { DiscordCommand } from '../discord.interface'
+import { DiscordCommand, DiscordCommandMetadata } from '../discord.interface'
 import { DiscordReflectorService } from '../reflector/discord-reflector.service'
 
 @Injectable()
@@ -21,31 +21,37 @@ export class DiscordCommandService extends Set<DiscordCommand> {
       .forEach(command => this.add(command))
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  private scan(instance: any, metaType: Function | Type<any>) {
-    const commands: DiscordCommand[] = []
-
-    this.metadataScanner.scanFromPrototype(
+  private scan(
+    instance: any,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    metaType: Function | Type<any>
+  ): DiscordCommand[] {
+    const methods = this.metadataScanner.scanFromPrototype(
       instance,
-      Object.getPrototypeOf(instance),
-      name => {
-        const metadata = this.reflector.getCommandMetadata(instance[name])
-
-        if (!metadata) return
-
-        const { commandName, commandArgs } = metadata
-        const params = this.reflector.getCommandParamMetadata(metaType, name)
-
-        commands.push({
-          callback: (instance[name] as Type<any>).bind(instance),
-          params,
-          commandName,
-          commandArgs,
-        })
-      }
+      metaType.prototype,
+      name => name
     )
 
-    return commands
+    return methods
+      .map(methodName => ({
+        methodName,
+        commandMetadata: this.reflector.getCommandMetadata(
+          instance[methodName]
+        ),
+      }))
+      .filter(metadata => metadata.commandMetadata)
+      .map(metadata => ({
+        ...metadata,
+        params: this.reflector.getCommandParamMetadata(
+          metaType,
+          metadata.methodName
+        ),
+      }))
+      .map<DiscordCommand>(({ commandMetadata, methodName, params }) => ({
+        ...(commandMetadata as DiscordCommandMetadata),
+        params: params.sort((a, b) => a.parameterIndex - b.parameterIndex),
+        callback: (instance[methodName] as Type<any>).bind(instance),
+      }))
   }
 
   private getProviders() {
