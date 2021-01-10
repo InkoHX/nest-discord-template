@@ -52,12 +52,12 @@ describe('DiscordService', () => {
     expect(commands[0].commandName).toEqual('foo')
     expect(commands[0].commandArgs).toBeUndefined()
     expect(commands[0].params).toHaveLength(0)
-    expect(typeof commands[0].callback === 'function')
+    expect(typeof commands[0].callback === 'function').toBeTruthy()
 
     expect(commands[1].commandName).toEqual('bar')
     expect(commands[1].commandArgs).toEqual(':hoge')
     expect(commands[1].params).toHaveLength(0)
-    expect(typeof commands[1].callback === 'function')
+    expect(typeof commands[1].callback === 'function').toBeTruthy()
   })
 
   it('scan', () => {
