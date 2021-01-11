@@ -1,8 +1,8 @@
 {
   "name": "nest-discord-template",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Nest.js X Discord.js",
+  "author": "InkoHX <me@inkohx.dev>",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
