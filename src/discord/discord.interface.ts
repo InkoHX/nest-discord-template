@@ -32,6 +32,7 @@ export type DiscordCommandParamMetadata =
   | DiscordCommandArgumentMetadata
 
 export interface DiscordChildCommand {
+  commandName: string
   commandArgs?: string
   params: DiscordCommandParamMetadata[]
   callback: (...args: any[]) => void | Promise<void>

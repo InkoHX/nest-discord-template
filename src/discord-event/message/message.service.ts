@@ -58,14 +58,18 @@ export class MessageService {
       if (!message.content.startsWith(this.bot.commandPrefix + commandName))
         continue
 
-      for (const { commandArgs, params, callback } of children) {
+      for (const child of children) {
         const pattern =
           this.bot.commandPrefix +
           commandName +
-          (commandArgs ? ` ${commandArgs}` : '')
+          ` ${child.commandName} ` +
+          (child.commandArgs ?? '')
+
         const matchResult = match(pattern)(message.content)
 
         if (!matchResult) continue
+
+        const { callback, params } = child
 
         const args = params
           .sort((a, b) => a.parameterIndex - b.parameterIndex)

@@ -26,16 +26,18 @@ export class DiscordParentCommandService extends Set<DiscordParentCommand> {
     // eslint-disable-next-line @typescript-eslint/ban-types
     metaType: Function | Type<any>
   ): DiscordParentCommand | null {
-    const commandName = this.reflector.getParentCommandMetadata(instance)
+    const commandName = this.reflector.getParentCommandMetadata(metaType)
     const children: DiscordChildCommand[] = []
 
     if (!commandName) return null
 
     this.metadataScanner.scanFromPrototype(
       instance,
-      Object.getPrototypeOf(instance),
+      metaType.prototype,
       name => {
-        const childMetadata = this.reflector.getChildCommandMetadata(instance)
+        const childMetadata = this.reflector.getChildCommandMetadata(
+          instance[name]
+        )
         const params = this.reflector.getCommandParamMetadata(metaType, name)
 
         if (!childMetadata) return
@@ -43,6 +45,7 @@ export class DiscordParentCommandService extends Set<DiscordParentCommand> {
         children.push({
           callback: (instance[name] as Type<any>).bind(instance),
           commandArgs: childMetadata.commandArgs,
+          commandName: childMetadata.commandName,
           params,
         })
       }
