@@ -15,7 +15,7 @@ export class MathCommandService {
     @CommandParam('num2') num2: string
   ) {
     const result = [num1, num2]
-      .map(str => parseInt(str))
+      .map(Number)
       .reduce((a, b) => a + b)
 
     await message.reply(result)
