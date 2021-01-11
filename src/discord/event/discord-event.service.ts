@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@nestjs/common'
 import { DiscoveryService, MetadataScanner } from '@nestjs/core'
 
-import { DiscordEvent } from '../discord.interface'
+import { DiscordEvent, DiscordEventMetadata } from '../discord.interface'
 import { DiscordService } from '../discord.service'
 import { DiscordReflectorService } from '../reflector/discord-reflector.service'
 
@@ -26,27 +26,22 @@ export class DiscordEventService {
   }
 
   private scan(instance: any): DiscordEvent[] {
-    const events: DiscordEvent[] = []
-
-    this.metadataScanner.scanFromPrototype(
+    const methods = this.metadataScanner.scanFromPrototype(
       instance,
       Object.getPrototypeOf(instance),
-      methodName => {
-        const metadata = this.reflector.getEventMetadata(instance[methodName])
-
-        if (!metadata) return
-
-        const { eventName, once } = metadata
-
-        events.push({
-          callback: (instance[methodName] as Type<any>).bind(instance),
-          eventName,
-          once,
-        })
-      }
+      name => name
     )
 
-    return events
+    return methods
+      .map(methodName => ({
+        methodName,
+        metadata: this.reflector.getEventMetadata(instance[methodName]),
+      }))
+      .filter(({ metadata }) => metadata)
+      .map(({ metadata, methodName }) => ({
+        ...(metadata as DiscordEventMetadata),
+        callback: (instance[methodName] as Type<any>).bind(instance),
+      }))
   }
 
   private getProviders() {
