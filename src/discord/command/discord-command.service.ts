@@ -49,7 +49,7 @@ export class DiscordCommandService extends Set<DiscordCommand> {
       }))
       .map<DiscordCommand>(({ commandMetadata, methodName, params }) => ({
         ...(commandMetadata as DiscordCommandMetadata),
-        params: params.sort((a, b) => a.parameterIndex - b.parameterIndex),
+        params,
         callback: (instance[methodName] as Type<any>).bind(instance),
       }))
   }

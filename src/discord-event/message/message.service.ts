@@ -41,13 +41,11 @@ export class MessageService {
 
       if (!matchResult) continue
 
-      const args = params
-        .sort((a, b) => a.parameterIndex - b.parameterIndex)
-        .map(param =>
-          param.paramType === 'MESSAGE'
-            ? message
-            : (matchResult.params as Record<string, string>)[param.argumentName]
-        )
+      const args = params.map(param =>
+        param.paramType === 'MESSAGE'
+          ? message
+          : (matchResult.params as Record<string, string>)[param.argumentName]
+      )
 
       return isPromise(callback) ? await callback(...args) : callback(...args)
     }
@@ -71,15 +69,11 @@ export class MessageService {
 
         const { callback, params } = child
 
-        const args = params
-          .sort((a, b) => a.parameterIndex - b.parameterIndex)
-          .map(param =>
-            param.paramType === 'MESSAGE'
-              ? message
-              : (matchResult.params as Record<string, string>)[
-                  param.argumentName
-                ]
-          )
+        const args = params.map(param =>
+          param.paramType === 'MESSAGE'
+            ? message
+            : (matchResult.params as Record<string, string>)[param.argumentName]
+        )
 
         return isPromise(callback) ? await callback(...args) : callback(...args)
       }
