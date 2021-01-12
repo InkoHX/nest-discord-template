@@ -2,7 +2,25 @@
 
 ![Node.js CI](https://github.com/InkoHX/nest-discord-commander/workflows/Node.js%20CI/badge.svg)
 
+## Description
+
+This is a template for using Discord.js with Nest.js.
+
 ## Example
+
+### EventHandler
+
+```ts
+@Injectable()
+export class GuildMemberAddEvent {
+  @DiscordEvent('guildMemberAdd')
+  onGuildMemberAdd(member: GuildMember) {
+    // your code
+  }
+}
+```
+
+### ParentCommand & ChildCommand
 
 ```ts
 @Injectable()
@@ -23,9 +41,25 @@ export class MathCommandService {
 }
 ```
 
-## Description
+### Single Command
 
-This is a template for using Discord.js with Nest.js.
+```ts
+@Injectable()
+export class SumCommandService {
+  @Command('sum', ':num1 :num2')
+  public async sum(
+    @CommandMessage message: Message,
+    @CommandParam('num1') num1: string,
+    @CommandParam('num2') num2: string
+  ) {
+    const result = [num1, num2]
+      .map(Number)
+      .reduce((a, b) => a + b)
+
+    await message.reply(result)
+  }
+}
+```
 
 ## Installation
 
