@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DiscoveryModule } from '@nestjs/core'
+import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper'
 import { Test, TestingModule } from '@nestjs/testing'
+
 import {
   ChildCommand,
   CommandMessage,
   CommandParam,
   ParentCommand,
 } from '../discord.decorator'
-import { DiscordChildCommand } from '../discord.interface'
-
+import { DiscordChildCommand, DiscordParentCommand } from '../discord.interface'
 import { DiscordReflectorService } from '../reflector/discord-reflector.service'
 import { DiscordParentCommandService } from './discord-parent-command.service'
 
@@ -29,6 +30,57 @@ describe('DiscordService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined()
+  })
+
+  it('init', () => {
+    @ParentCommand('foo')
+    class TestCommand {
+      @ChildCommand('bar', ':hoge')
+      bar(
+        @CommandMessage _message: unknown,
+        @CommandParam('hoge') _hoge: string
+      ) {}
+    }
+
+    jest
+      .spyOn<DiscordParentCommandService, any>(service, 'getProviders')
+      .mockReturnValueOnce([
+        {
+          instance: new TestCommand(),
+          metatype: TestCommand,
+        },
+      ] as Array<Partial<InstanceWrapper<any>>>)
+
+    service.init()
+
+    const commands = [...service]
+
+    expect(commands).toHaveLength(1)
+    expect(commands[0]).toEqual(
+      expect.objectContaining<DiscordParentCommand>({
+        commandName: 'foo',
+        children: [
+          {
+            commandName: 'bar',
+            commandArgs: ':hoge',
+            callback: expect.any(Function),
+            params: [
+              {
+                paramType: 'MESSAGE',
+                parameterIndex: 0,
+              },
+              {
+                paramType: 'ARGUMENT',
+                argumentName: 'hoge',
+                parameterIndex: 1,
+              },
+            ],
+          },
+        ],
+      })
+    )
+
+    service.clear()
   })
 
   describe('scan', () => {
