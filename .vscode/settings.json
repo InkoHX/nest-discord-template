@@ -1,4 +1,11 @@
 {
   "files.eol": "\n",
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "deepscan.enable": true,
+  "cSpell.words": [
+    "fuga",
+    "hoge",
+    "nestjs",
+    "piyo"
+  ]
 }
