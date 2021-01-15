@@ -71,8 +71,9 @@ export class MessageService {
         const pattern =
           this.bot.commandPrefix +
           commandName +
-          ` ${child.commandName} ` +
-          (child.commandArgs ?? '')
+          ' ' +
+          child.commandName +
+          (child.commandArgs ? ` ${child.commandArgs}` : '')
 
         const matchResult = match(pattern)(message.content)
 
