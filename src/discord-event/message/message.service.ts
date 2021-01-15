@@ -55,7 +55,9 @@ export class MessageService {
         ' ' +
         args.filter(value => typeof value === 'string').join(' ')
       this.logger.log(
-        `${message.author.tag} (${message.author.id}) has executed "${command}"`
+        `${message.author.tag} (${
+          message.author.id
+        }) has executed "${command.trim()}"`
       )
 
       return isPromise(callback) ? await callback(...args) : callback(...args)
@@ -95,7 +97,9 @@ export class MessageService {
           ' ' +
           args.filter(value => typeof value === 'string').join(' ')
         this.logger.log(
-          `${message.author.tag} (${message.author.id}) has executed ${command}`
+          `${message.author.tag} (${
+            message.author.id
+          }) has executed ${command.trim()}`
         )
 
         return isPromise(callback) ? await callback(...args) : callback(...args)
