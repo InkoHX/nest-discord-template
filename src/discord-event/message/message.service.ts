@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { Message } from 'discord.js'
 import { match } from 'path-to-regexp'
 
@@ -15,6 +15,8 @@ const isPromise = (obj: any): obj is Promise<any> =>
 
 @Injectable()
 export class MessageService {
+  private readonly logger = new Logger('CommandHandler')
+
   public constructor(
     private readonly command: DiscordCommandService,
     private readonly parentCommand: DiscordParentCommandService,
@@ -47,6 +49,15 @@ export class MessageService {
           : (matchResult.params as Record<string, string>)[param.argumentName]
       )
 
+      const command =
+        this.bot.commandPrefix +
+        commandName +
+        ' ' +
+        args.filter(value => typeof value === 'string').join(' ')
+      this.logger.log(
+        `${message.author.tag} (${message.author.id}) has executed "${command}"`
+      )
+
       return isPromise(callback) ? await callback(...args) : callback(...args)
     }
   }
@@ -73,6 +84,17 @@ export class MessageService {
           param.paramType === 'MESSAGE'
             ? message
             : (matchResult.params as Record<string, string>)[param.argumentName]
+        )
+
+        const command =
+          this.bot.commandPrefix +
+          commandName +
+          ' ' +
+          child.commandName +
+          ' ' +
+          args.filter(value => typeof value === 'string').join(' ')
+        this.logger.log(
+          `${message.author.tag} (${message.author.id}) has executed ${command}`
         )
 
         return isPromise(callback) ? await callback(...args) : callback(...args)
