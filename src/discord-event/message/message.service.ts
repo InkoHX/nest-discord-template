@@ -35,11 +35,10 @@ export class MessageService {
 
   private async runCommand(message: Message) {
     for (const { commandName, commandArgs, params, callback } of this.command) {
-      const pattern =
-        this.bot.commandPrefix +
-        commandName +
-        (commandArgs ? ` ${commandArgs}` : '')
-      const matchResult = match(pattern)(message.content)
+      const pattern = `${this.bot.commandPrefix + commandName} ${
+        commandArgs ?? ''
+      }`
+      const matchResult = match(pattern.trim())(message.content)
 
       if (!matchResult) continue
 
@@ -49,11 +48,9 @@ export class MessageService {
           : (matchResult.params as Record<string, string>)[param.argumentName]
       )
 
-      const command =
-        this.bot.commandPrefix +
-        commandName +
-        ' ' +
-        args.filter(value => typeof value === 'string').join(' ')
+      const command = `${this.bot.commandPrefix + commandName} ${args
+        .filter(value => typeof value === 'string')
+        .join(' ')}`
       this.logger.log(
         `${message.author.tag} (${
           message.author.id
@@ -70,14 +67,11 @@ export class MessageService {
         continue
 
       for (const child of children) {
-        const pattern =
-          this.bot.commandPrefix +
-          commandName +
-          ' ' +
-          child.commandName +
-          (child.commandArgs ? ` ${child.commandArgs}` : '')
+        const pattern = `${this.bot.commandPrefix + commandName} ${
+          child.commandName
+        } ${child.commandArgs ?? ''}`
 
-        const matchResult = match(pattern)(message.content)
+        const matchResult = match(pattern.trim())(message.content)
 
         if (!matchResult) continue
 
@@ -89,13 +83,9 @@ export class MessageService {
             : (matchResult.params as Record<string, string>)[param.argumentName]
         )
 
-        const command =
-          this.bot.commandPrefix +
-          commandName +
-          ' ' +
-          child.commandName +
-          ' ' +
-          args.filter(value => typeof value === 'string').join(' ')
+        const command = `${this.bot.commandPrefix + commandName} ${
+          child.commandName
+        } ${args.filter(value => typeof value === 'string').join(' ')}`
         this.logger.log(
           `${message.author.tag} (${
             message.author.id
